@@ -12,7 +12,7 @@ class Connector():
 
 		data = []
 		for module in json_data:
-			with open(module['file_name']) as f:
+			with open(str(module['file_name'])) as f:
 				data.append(
 					{'name': module['name'],
 					 'data': json.load(f)
