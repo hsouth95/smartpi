@@ -1,14 +1,18 @@
 from flask import Flask, render_template
 import json
+from modules.connector import Connector
+
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def hello_world():
-    description = 'No weather data'
-    with open('/tmp/weather.json', 'r') as weather_file:
-        data = json.load(weather_file)
-        description = data['weather'][0]['description']
-
-    return description
+	data_engine = Connector()
+	return data_engine.get_data()
+    
+@app.before_first_request
+def startup():
+	print("hello")
+	data_engine = Connector()
+	data_engine.start_processes()

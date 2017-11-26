@@ -1,0 +1,9 @@
+[
+    {
+	"name": "weather",
+	"start_command": "python modules/weather/weather.py start",
+	"data_type": "json",
+	"data_format": "file",
+	"file_name": "/tmp/weather.json"
+    }
+]

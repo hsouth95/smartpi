@@ -70,10 +70,7 @@ class daemon:
 			pid = None
 	
 		if pid:
-			message = "pidfile {0} already exist. " + \
-					"Daemon already running?\n"
-			sys.stderr.write(message.format(self.pidfile))
-			sys.exit(1)
+			return
 		
 		# Start the daemon
 		self.daemonize()

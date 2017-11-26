@@ -7,12 +7,14 @@ import json
 import time
 from daemon import daemon
 import requests
+import logging
 
 class WeatherBot(daemon):
+	
     def run(self):
+		logging.basicConfig(filename='/tmp/test.log', level=logging.DEBUG)
 		API_ROOT = 'http://api.openweathermap.org/data/2.5/weather'
 		config = self.get_config()
-		
 		payload = {'q': config['CITY_NAME'], 'APPID': config['API_KEY']}
 		while True:
 				weather_data = requests.get(API_ROOT,params=payload)
@@ -23,8 +25,16 @@ class WeatherBot(daemon):
 				time.sleep(config['TIME_INTERVAL'])
 
     def get_config(self):
-		with open('config.json') as config_file:
-			return json.load(config_file)
+		#need to parse from within this dir
+		logging.basicConfig(filename='/tmp/test.log', level=logging.DEBUG)
+		try:
+			path = os.path.join(sys.path[0], 'weather/config.json')
+			logging.info(path)
+			with open(path) as config_file:
+				return json.load(config_file)
+		except:
+			logging.error('Unexpected error: ' + sys.exc_info()[0])
+			raise
 
 
 if __name__ == '__main__':
@@ -39,5 +49,5 @@ if __name__ == '__main__':
 		else:
 			sys.exit(2)
 	else:
-		print("usage: %s start|stop|restart" % sys.argv[0])
+		daemon.run()
 		sys.exit(0)
